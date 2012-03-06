@@ -3,7 +3,7 @@ import urllib
 
 from google.appengine.api import urlfetch
 from google.appengine.api import mail
-
+#TODO logging and handle exception
 FORM_FIELDS = {'emailAddress': 'oran2ge', 'pswd': '123654'}
 FORM_DATA = urllib.urlencode(FORM_FIELDS)
 URL_HOMEPAGE = 'http://www.swagbucks.com/'
