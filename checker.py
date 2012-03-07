@@ -4,10 +4,10 @@ import urllib
 from google.appengine.api import urlfetch
 from google.appengine.api import mail
 #TODO logging and handle exception
-FORM_FIELDS = {'emailAddress': 'oran2ge', 'pswd': '123654'}
+FORM_FIELDS = {'name': 'test', 'pwd': 'test'}
 FORM_DATA = urllib.urlencode(FORM_FIELDS)
-URL_HOMEPAGE = 'http://www.swagbucks.com/'
-URL_LOGIN = 'http://www.swagbucks.com/?cmd=sb-login&from=%2F%3Fcmd%3Dhome'
+URL_HOMEPAGE = 'http://www.example.com/'
+URL_LOGIN = 'http://www.example.com/?login'
 HEADERS = {
             'User-Agent': 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/535.11 Chrome/17.0.963.65',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -17,10 +17,6 @@ HEADERS = {
             'Proxy-Connection': 'keep-alive',
             'Content-Type': 'application/x-www-form-urlencoded',
           }
-
-PREFIX = '<span class="user">'
-POSTFIX = '</span>You\'ve won'
-LUCKYNAME = 'WS3389'
 
 
 class MainPage(webapp2.RequestHandler):
@@ -49,7 +45,6 @@ class MainPage(webapp2.RequestHandler):
                                     'Cookie': html_homepage.headers['Set-Cookie'],
                                     'Origin': URL_HOMEPAGE,
                                     'Proxy-Connection': HEADERS['Proxy-Connection'],
-                                    'P3P': html_homepage.headers['P3P'],
                                     'User-Agent': HEADERS['User-Agent'],
                                     'Referer': URL_HOMEPAGE
                                     })
@@ -63,25 +58,23 @@ class MainPage(webapp2.RequestHandler):
                                     'Accept-Language': HEADERS['Accept-Language'],
                                     'Cookie': html_redirect.headers['Set-Cookie'],
                                     'Proxy-Connection': HEADERS['Proxy-Connection'],
-                                    'P3P': html_homepage.headers['P3P'],
                                     'User-Agent': HEADERS['User-Agent'],
                                     'Referer': URL_HOMEPAGE
                                     })
                 content = html_home.content
-
-                name = content[(content.index(PREFIX)+len(PREFIX)):content.index(POSTFIX)].upper()
+                #parse content,anything you like 
                 #Send email
-                if name == LUCKYNAME:
+                if content == '*****':
                     Emailme()                    
 
-                print self.response.out.write('LuckyMan:' + name)
+                print self.response.out.write('content:' + content)
 
 def Emailme():
-    message = mail.EmailMessage(sender='no-rely@code-checker.appspotmail.com',
-                                subject='Swagbuck Winner!')
+    message = mail.EmailMessage(sender='no-rely@appid.appspotmail.com',
+                                subject='hello world!')
 
-    message.to = 'niuben0405@gmail.com'
-    message.body = 'See the subject'
+    message.to = 'test@gmail.com'
+    message.body = 'bingo'
 
     message.send()        
 
